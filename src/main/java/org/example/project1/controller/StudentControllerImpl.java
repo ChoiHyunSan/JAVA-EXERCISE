@@ -1,57 +1,57 @@
 package org.example.project1.controller;
 
-import org.example.project1.define.StudentMenu;
-import org.example.project1.view.InputView;
 import org.example.project1.view.OutputView;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import static org.example.project1.define.StudentMenu.*;
+import static org.example.project1.define.StudentMenu.STUDENT_EXIT;
+
 public class StudentControllerImpl implements StudentController {
-    public StudentControllerImpl(Scanner sc, InputView inputView, OutputView outputView) {
+
+    public StudentControllerImpl(Scanner sc, OutputView outputView) {
         this.sc = sc;
-        this.inputView = inputView;
         this.outputView = outputView;
     }
 
     private final Scanner sc;
-    private final InputView inputView;
     private final OutputView outputView;
 
     @Override
-    public boolean mainLoop() {
-        outputView.mainMenu();
-        return handleMenu();
-    }
-
-    private boolean handleMenu(){
-        Integer input = null;
-        try{
-            input = inputView.mainMenu();
-            if(input == StudentMenu.EXIT) return false;
-
-            switch (input) {
-                case StudentMenu.STUDENT -> handleStudentMenu();
-                case StudentMenu.SUBJECT -> handleSubjectMenu();
-                case StudentMenu.SCORE -> handleScoreMenu();
-                default -> throw new InputMismatchException();
+    public void handleMenu() {
+        while(true){
+            outputView.studentMenu();
+            switch (Input(sc, outputView)) {
+                case STUDENT_INSERT -> insert();
+                case STUDENT_LIST -> list();
+                case STUDENT_FIND -> find();
+                case STUDENT_UPDATE -> update();
+                case STUDENT_DELETE -> delete();
+                case STUDENT_EXIT -> { return; }
+                default -> { }
             }
-        }catch (InputMismatchException e){
-            outputView.inputError();
-            e.printStackTrace();
         }
-        return true;
     }
 
-    private void handleScoreMenu() {
-        outputView.scoreMenu();
+    private void delete() {
+        outputView.deleteStudent();
     }
 
-    private void handleSubjectMenu() {
-        outputView.subjectMenu();
+    private void update() {
+        outputView.updateStudent();
     }
 
-    private void handleStudentMenu() {
-        outputView.studentMenu();
+    private void find() {
+        outputView.findStudent();
     }
+
+    private void list() {
+        outputView.printStudentList();
+    }
+
+    private void insert() {
+        outputView.insertStudent();
+    }
+
+
 }

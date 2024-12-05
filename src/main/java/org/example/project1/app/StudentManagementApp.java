@@ -1,17 +1,18 @@
 package org.example.project1.app;
 
-import org.example.project1.controller.StudentController;
+import org.example.project1.controller.AppController;
 
 public class StudentManagementApp implements App{
 
-    public StudentManagementApp(StudentController controller) {
+    public StudentManagementApp(AppController controller) {
         this.controller = controller;
     }
 
-    private final StudentController controller;
+    private final AppController controller;
 
     @Override
     public void run() {
-        while(controller.mainLoop()){}
+        while(controller.mainLoop()){
+        }
     }
 }
